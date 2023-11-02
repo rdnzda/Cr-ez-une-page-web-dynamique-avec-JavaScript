@@ -2,15 +2,6 @@
 const works = await fetch("http://localhost:5678/api/works/").then(works => works.json());
 const gallery = document.querySelector(".gallery");
 
-
-// Fonction qui envoie vers une section de page en attendant que la page soit completement charger
-window.onload = function() {
-    // Attend que la page soit entièrement chargée
-    // Redirige ensuite vers la section cible sur la page cible
-    window.location.href = "index.html#contact";
-  }
-
-
 // Fonction qui génére l'affichage des projets.
 function generateWorks(works) {
     for (let i = 0; i < works.length; i++) {
