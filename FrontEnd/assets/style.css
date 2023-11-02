@@ -98,6 +98,17 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+li a {
+	color: black;
+	text-decoration: none;
+}
+
+li a:hover {
+	color: #B1663C;
+}
+
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -121,10 +132,40 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
+#portfolio {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+}
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+.filter {
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.filter button {
+	border-radius: 60px;
+	color: #1D6154;
+	font-family: 'Syne';
+	text-align: center;
+	padding: 8px 20px;
+	background-color: transparent;
+	border: 1px solid #1D6154;
+}
+
+.filter button:hover {
+	color: white;
+	background-color: #1D6154;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
