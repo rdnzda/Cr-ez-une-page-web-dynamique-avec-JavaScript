@@ -151,7 +151,7 @@ li a:hover {
 	gap: 10px;
 }
 
-.filter button {
+.filter button{
 	border-radius: 60px;
 	color: #1D6154;
 	font-family: 'Syne';
@@ -165,6 +165,11 @@ li a:hover {
 .filter button:hover {
 	color: white;
 	background-color: #1D6154;
+}
+
+.filter button.active {
+	background-color: #1D6154;
+	color: white;
 }
 
 .gallery {
@@ -274,4 +279,8 @@ footer nav ul {
 
 .login a {
 	color: black;
+}
+
+#message-erreur {
+	color: red;
 }
