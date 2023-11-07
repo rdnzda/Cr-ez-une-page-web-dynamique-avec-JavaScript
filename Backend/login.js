@@ -27,9 +27,12 @@ boutonSeConnecter.addEventListener("click", function (event) {
     })
     .then(data => {
         console.log("Connexion réussie:", data);
+        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('token', data.token);
         window.location.href = "../FrontEnd/index.html";
     })
     .catch(error => {
         console.error("Erreur de connexion:", error);
+        document.getElementById("message-erreur").innerText = "Identifiant ou mot de passe incorrect.";
     });
 });

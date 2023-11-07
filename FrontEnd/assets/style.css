@@ -75,7 +75,11 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
+
+}
+
+main {
+ 	min-height: 100%;
 }
 
 h2{
@@ -141,7 +145,7 @@ li a:hover {
 
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	margin-top: 70px;
 }
 
 .filter {
@@ -262,7 +266,11 @@ footer nav ul {
 	box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
 }
 
-.login div input:focus {
+input:focus {
+	outline: none;
+}
+
+textarea:focus {
 	outline: none;
 }
 
@@ -283,4 +291,44 @@ footer nav ul {
 
 #message-erreur {
 	color: red;
+}
+
+.titre-projets {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	gap: 30px;
+}
+
+.modify-div {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.titre-projets .modify-div {
+	margin-top: 70px;
+	cursor: pointer;
+}
+
+.mode-edition {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: flex;
+	height: 60px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	background-color: black;
+}
+
+.mode-edition div {
+	color: white;
+}
+
+
+.none {
+	display: none;
 }

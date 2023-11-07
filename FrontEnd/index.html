@@ -9,16 +9,23 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<script src="https://kit.fontawesome.com/9ddd3f48d7.js" crossorigin="anonymous"></script>
 	<script type="module" src="../Backend/main.js"></script>
 </head>
 <body>
 <header>
+	<div class="mode-edition">
+		<div class="modify-div">
+			<i class="fa-regular fa-pen-to-square"></i>
+			<p>Mode édition</p>
+		</div>
+	</div>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
 			<li><a href="/FrontEnd/index.html">projets</a></li>
 			<li><a href="index.html#contact">contact</a></li>
-			<li><a href="/FrontEnd/login.html">login</a></li>
+			<li><a href="/FrontEnd/login.html" class="login-logout">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -35,9 +42,9 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-	<section id="portfolio">
+	<section class="portfolio" id="portfolio">
 		<h2>Mes Projets</h2>
-		<div class="filter">
+		<div class="filter none">
 			<button class="btn-tous active" id="default-button">Tous</button>
 			<button class="btn-objets">Objets</button>
 			<button class="btn-appartements">Appartements</button>
