@@ -385,10 +385,14 @@ textarea:focus {
 .modal-header button {
 	background-color: transparent;
 	border: none;
-	text-align: end;
-	cursor: pointer;
-	width: fit-content;
 	padding: 0px;
+	width: fit-content;
+	cursor: pointer;
+}
+
+.close-modal {
+	position: absolute;
+	left: 92%;
 }
 
 .modal-main h3 {
@@ -448,19 +452,8 @@ textarea:focus {
 	cursor: pointer;
 }
 
-.mo.modal-main figure button i {
-	text-align: center;
-}
-
 .fa-arrow-left {
 	color: #000000;
-}
-
-.close-modal {
-	text-align: right;
-	width: fit-content;
-	margin: 0;
-	flex: 1;
 }
 
 .cadre-ajouter {

@@ -20,8 +20,6 @@ function generateWorks(works) {
     }
 };
 
-let swaggerDocument; // Assure-toi que la variable est déclarée dans une portée accessible.
-
 if (userId) {
     // Ouverture de la Modale.
     function openModal() {
@@ -195,6 +193,11 @@ if (userId) {
     div.addEventListener("click", function() {
         openModal();
         generateModalWorks();
+        
+        const boutonCloseModal = document.querySelector('.close-modal');
+            boutonCloseModal.addEventListener("click", function() {
+                closeModal();
+            })
         // Si bouton ajouter photo cliquer.
         document.querySelector('.ajouter-photo').addEventListener('click', function(event){
             event.preventDefault();
@@ -230,10 +233,6 @@ if (userId) {
 
             checkForm();
 
-            const boutonCloseModal = document.querySelector('.close-modal');
-            boutonCloseModal.addEventListener("click", function() {
-                closeModal();
-            })
             boutonRetour.addEventListener("click", function(event) {
                 event.preventDefault();
                 openModal();
@@ -323,30 +322,20 @@ else {
 
 
     // Affichage filtrer par catégorie.
-    const boutonTous = document.querySelector('.btn-tous');
-    boutonTous.addEventListener("click", function() {
-        document.querySelector(".gallery").innerHTML = '';
-        generateWorks(works);
+    function getWorksByCategory(buttonSelector, categoryName) {
+        const boutonObjets = document.querySelector(buttonSelector);
+        boutonObjets.addEventListener("click", function() {
+            document.querySelector(".gallery").innerHTML = '';
+            if (categoryName === "Tous") {
+                return generateWorks(works);
+            }
+            let worksObjets = works.filter(work => work.category.name === categoryName);
+            generateWorks(worksObjets);
     });
+}
 
-    const boutonObjets = document.querySelector('.btn-objets');
-    boutonObjets.addEventListener("click", function() {
-        document.querySelector(".gallery").innerHTML = '';
-        let worksObjets = works.filter(work => work.category.name === "Objets");
-        generateWorks(worksObjets);
-    });
-
-    const boutonAppartements = document.querySelector('.btn-appartements');
-    boutonAppartements.addEventListener("click", function() {
-        document.querySelector(".gallery").innerHTML = '';
-        let worksAppartements = works.filter(work => work.category.name === "Appartements");
-        generateWorks(worksAppartements);
-    });
-
-    const boutonHotelsRestaurants = document.querySelector('.btn-hotels-restaurants');
-    boutonHotelsRestaurants.addEventListener("click", function() {
-        document.querySelector(".gallery").innerHTML = '';
-        let worksHotelsRestaurants = works.filter(work => work.category.name === "Hotels & restaurants");
-        generateWorks(worksHotelsRestaurants);
-    });
+getWorksByCategory('.btn-objets', "Objets");
+getWorksByCategory('.btn-appartements', "Appartements");
+getWorksByCategory('.btn-hotels-restaurants', "Hotels & restaurants");
+getWorksByCategory('.btn-tous', "Tous");
 }
