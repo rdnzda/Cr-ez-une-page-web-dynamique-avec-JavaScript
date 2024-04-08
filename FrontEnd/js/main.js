@@ -73,12 +73,13 @@ if (userId) {
                     },
                 })
                 .then(response => {
-                if (response.ok) {
-                    console.log(`Le travail avec l'ID ${workId} a été supprimé.`);
-                    generateModalWorks();
-                } else {
-                    console.error(`Échec de la suppression du travail avec l'ID ${workId}.`);
-                }
+                    if (response.ok) {
+                        console.log(`Le travail avec l'ID ${workId} a été supprimé.`);
+                        fetch("http://localhost:5678/api/works/")
+                        window.location.href = "./index.html";
+                    } else {
+                        console.error(`Échec de la suppression du travail avec l'ID ${workId}.`);
+                    }
                 })
                 .catch(error => {
                 console.error('Erreur lors de la demande DELETE:', error);
@@ -154,7 +155,7 @@ if (userId) {
     // Changement du login en logout
     const logout = document.querySelector(".login-logout");
     logout.innerText = "logout";
-    logout.href = "/FrontEnd/index.html"
+    logout.href = "/index.html"
     logout.addEventListener("click", function() {
         localStorage.removeItem('userId');
         localStorage.removeItem('token')
@@ -263,7 +264,6 @@ if (userId) {
     })
 
     document.querySelector('.valider').addEventListener("click", function (event) {
-        event.preventDefault();
         const title = document.getElementById('input-title').value;
         const imageInput = document.getElementById('image-input');
         const categoryId = document.getElementById('input-select').value;
@@ -285,6 +285,7 @@ if (userId) {
         .then(response => response.json())
         .then(data => {
             console.log('Réponse du serveur :', data);
+            window.location.href = "./index.html";
         })
         .catch(error => {
             console.error('Erreur lors de la requête :', error);

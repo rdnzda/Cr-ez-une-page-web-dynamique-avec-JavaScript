@@ -29,7 +29,7 @@ boutonSeConnecter.addEventListener("click", function (event) {
         console.log("Connexion réussie:", data);
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('token', data.token);
-        window.location.href = "../FrontEnd/index.html";
+        window.location.href = "../index.html";
     })
     .catch(error => {
         console.error("Erreur de connexion:", error);
