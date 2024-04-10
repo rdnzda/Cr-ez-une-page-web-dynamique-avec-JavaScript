@@ -1,5 +1,6 @@
 // Récupération des données depuis l'API.
 const works = await fetch("http://localhost:5678/api/works/").then(works => works.json());
+const categories = await fetch("http://localhost:5678/api/categories/").then(categories => categories.json());
 const gallery = document.querySelector(".gallery");
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token')
@@ -21,15 +22,6 @@ function generateWorks(works) {
 };
 
 if (userId) {
-    // Ouverture de la Modale.
-    function openModal() {
-        document.querySelector('.overlay').classList.add('overlay--open');
-        document.querySelector('.modal').classList.add('modal--open');
-        document.querySelector('.return-modal').classList.add('none');
-        document.querySelector('.valider').classList.add('none');
-        document.querySelector('.ajouter-photo').classList.remove('none');
-        document.querySelector("body").style.overflowY = "hidden";
-    }
 
     // Fermeture de la Modale.
     function closeModal() {
@@ -39,12 +31,28 @@ if (userId) {
         }
     
     // Fonction qui génere les travaux dans la modale.  
-    function generateModalWorks() {
+    function openModal() {
+        document.querySelector('.overlay').classList.add('overlay--open');
+        document.querySelector('.modal').classList.add('modal--open');
+        document.querySelector('.return-modal').classList.add('none');
+        document.querySelector('.valider').classList.add('none');
+        document.querySelector('.ajouter-photo').classList.remove('none');
+        document.querySelector("body").style.overflowY = "hidden";
+        fetch("http://localhost:5678/api/works/")
+            .then(response => response.json())
+            .then(works => {
+                document.querySelector(".modal-main").innerHTML = '';
+                const titre = document.createElement('h3');
+                titre.innerText = "Gallery photo";
+                document.querySelector('.modal-main').appendChild(titre);
+                generateModalWorks(works);
+                generateWorks(works); // Réafficher les travaux mis à jour
+            })
+            .catch(error => console.error('Erreur lors de la récupération des travaux:', error));
+    };
+
+    function generateModalWorks(works) {
         const modalMain = document.querySelector('.modal-main');
-        const titre = document.createElement('h3');
-        titre.innerText = "Gallery photo";
-        modalMain.innerHTML = '';
-        modalMain.appendChild(titre);
         for (let i = 0; i < works.length; i++) {
             const frame = works[i];
             const figure = document.createElement('figure');
@@ -76,7 +84,17 @@ if (userId) {
                     if (response.ok) {
                         console.log(`Le travail avec l'ID ${workId} a été supprimé.`);
                         fetch("http://localhost:5678/api/works/")
-                        window.location.href = "./index.html";
+                            .then(response => response.json())
+                            .then(works => {
+                                document.querySelector(".gallery").innerHTML = '';
+                                document.querySelector(".modal-main").innerHTML = '';
+                                const titre = document.createElement('h3');
+                                titre.innerText = "Gallery photo";
+                                document.querySelector('.modal-main').appendChild(titre);
+                                generateModalWorks(works);
+                                generateWorks(works); // Réafficher les travaux mis à jour
+                            })
+                            .catch(error => console.error('Erreur lors de la récupération des travaux:', error));
                     } else {
                         console.error(`Échec de la suppression du travail avec l'ID ${workId}.`);
                     }
@@ -87,7 +105,7 @@ if (userId) {
             });
             console.log(imageElement.src);
         }
-    };
+    }
 
     // Fonction qui génère la méthode d'envoi
     function generateModalSendingMethod() {
@@ -193,7 +211,6 @@ if (userId) {
     // Ouverture du modal si clique sur modifier.
     div.addEventListener("click", function() {
         openModal();
-        generateModalWorks();
         
         const boutonCloseModal = document.querySelector('.close-modal');
             boutonCloseModal.addEventListener("click", function() {
@@ -237,7 +254,6 @@ if (userId) {
             boutonRetour.addEventListener("click", function(event) {
                 event.preventDefault();
                 openModal();
-                generateModalWorks();
             })
 
             document.getElementById('bouton-ajouter-photo').addEventListener('click', function () {
@@ -285,7 +301,14 @@ if (userId) {
         .then(response => response.json())
         .then(data => {
             console.log('Réponse du serveur :', data);
-            window.location.href = "./index.html";
+            closeModal();
+            fetch("http://localhost:5678/api/works/")
+                .then(response => response.json())
+                .then(works => {
+                    document.querySelector(".gallery").innerHTML = '';
+                    generateWorks(works); // Réafficher les travaux mis à jour
+                })
+                .catch(error => console.error('Erreur lors de la récupération des travaux:', error));
         })
         .catch(error => {
             console.error('Erreur lors de la requête :', error);
@@ -304,39 +327,55 @@ else {
     const filter = document.querySelector(".filter");
     filter.classList.remove('none');
 
-    // Affichage different des boutons actives.
-    const boutons = document.querySelectorAll('.filter button');
-
-    boutons.forEach(bouton => {
-    bouton.addEventListener('click', function() {
-        boutons.forEach(b => b.classList.remove('active'));
-        bouton.classList.add('active');
-    });
-    });
-
     // Première affichage principal de la page.
     try {
         generateWorks(works);
+        filterBoutons();
     } catch (error) {
         console.error("Une erreur s'est produite lors de la génération des œuvres :", error);
     };
 
-
-    // Affichage filtrer par catégorie.
-    function getWorksByCategory(buttonSelector, categoryName) {
-        const boutonObjets = document.querySelector(buttonSelector);
-        boutonObjets.addEventListener("click", function() {
-            document.querySelector(".gallery").innerHTML = '';
-            if (categoryName === "Tous") {
-                return generateWorks(works);
-            }
+    // Génération dynamique des boutons de filtres
+    function filterBoutons() {
+        fetch("http://localhost:5678/api/categories/")
+            .then(response => response.json())
+            .then(categories => {
+                const boutonObjets = document.querySelector(".filter");
+                categories.forEach(category => {
+                    const bouton = document.createElement("button");
+                    bouton.textContent = category.name;
+                    bouton.classList.add("btn-" + category.name.toLowerCase().replace(/\s+/g, '-'));
+                    bouton.addEventListener("click", function() {
+                        filterWorksByCategory(category.name);
+                        // Mettre à jour les classes actives
+                        boutons.forEach(b => b.classList.remove('active'));
+                        bouton.classList.add('active');
+                    });
+                    boutonObjets.appendChild(bouton);
+                });
+    
+                // Sélectionner tous les boutons après leur création
+                const boutons = document.querySelectorAll('.filter button');
+    
+                // Ajouter la logique pour le bouton "Tous"
+                const boutonTous = document.querySelector(".btn-tous");
+                boutonTous.addEventListener("click", function() {
+                    filterWorksByCategory("Tous");
+                    // Mettre à jour les classes actives
+                    boutons.forEach(b => b.classList.remove('active'));
+                    boutonTous.classList.add('active');
+                });
+            })
+            .catch(error => console.error('Erreur lors de la récupération des categories:', error));
+    }
+    
+    function filterWorksByCategory(categoryName) {
+        document.querySelector(".gallery").innerHTML = '';
+        if (categoryName === "Tous") {
+            generateWorks(works); 
+        } else {
             let worksObjets = works.filter(work => work.category.name === categoryName);
             generateWorks(worksObjets);
-    });
-}
-
-getWorksByCategory('.btn-objets', "Objets");
-getWorksByCategory('.btn-appartements', "Appartements");
-getWorksByCategory('.btn-hotels-restaurants', "Hotels & restaurants");
-getWorksByCategory('.btn-tous', "Tous");
+        }
+    }
 }
